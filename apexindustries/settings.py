@@ -1,3 +1,4 @@
+import dj_database_url
 import os
 
 from pathlib import Path
@@ -68,6 +69,9 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
