@@ -33,7 +33,7 @@ MESSAGE_TAGS = {
 }
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 MIDDLEWARE = [
-    'django.middleware.x.SecurityMiddleware',
+    'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
