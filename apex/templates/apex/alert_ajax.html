@@ -1,0 +1,26 @@
+<script>
+    $("#noti_alert_button").click(function(){
+        var b = 'clicked'
+        let count_html = document.querySelector(".badge")
+        // console.log('all false')
+        count_html.classList.remove('bg-danger')
+        count_html.innerHTML = ""
+        b_data = {
+            button: b,
+        }
+        $.ajax({
+            url : "{% url 'noti_alert' %}", //
+            data: b_data,
+            dataType: "json",
+            success: function(data){
+                if (data.status == "Save") {
+                }
+            }
+        })
+    })
+
+
+
+
+
+</script>

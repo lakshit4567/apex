@@ -1,0 +1,103 @@
+<script>
+
+    $("#btnsave-es").click("#post-form-es",function(){
+    // $("#btnsave").click(function(){
+        output_uf = "";
+        let date = $("#es_date").val();
+        let type = $("#es_type").val();
+        let quantity = $("#es_quantity").val();
+        let size = $("#es_size").val();
+        let csr = $("input[name=csrfmiddlewaretoken").val();
+        // console.log(uf_date)
+        // console.log(sale_weight)
+        // console.log(sale_quantity)
+        es_data = {
+            es_date : date,
+            es_type : type,
+            es_quantity:quantity,
+            es_size : size,
+            csrfmiddlewaretoken: csr,
+        };
+        if(date == ''){
+            // console.log('input')
+            $("#msg-es").html('<div class="mt-2 text- alert alert-danger alert-dismissible fade show" role="alert"><strong>Error!</strong> Please Enter Date.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        }else if(type == ''){
+            $("#msg-es").html('<div class="mt-2 text- alert alert-danger alert-dismissible fade show" role="alert"><strong>Error!</strong> Please enter Type.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        }else if(quantity == '') {
+            $("#msg-es").html('<div class="mt-2 text- alert alert-danger alert-dismissible fade show" role="alert"><strong>Error!</strong> Please enter quantity.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        }else if(size == ''){
+            $("#msg-es").html('<div class="mt-2 text- alert alert-danger alert-dismissible fade show" role="alert"><strong>Error!</strong> Please enter Size.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        }
+        else{
+        $.ajax({
+            url : "{% url 'es_save' %}", //
+            method: "POST",
+            data: es_data,
+            dataType: "json",
+            success: function (data) {
+                x = data.es_data;
+                if (data.status == "Save") {
+                    for (i = 0; i < x.length; i++) {
+                        output_uf +=
+                            "<tr><td>" +
+                            x[i].id +
+                            "</td><td>" +
+                            x[i].register_id +
+                            "</td><td>" +
+                            x[i].ES_Date  +
+                            "</td><td>" +
+                            x[i].Type +
+                            "</td><td>" +
+                            x[i].ES_Quantity +
+                            "</td><td>" +
+                            x[i].ES_Size +
+                            "</td>" +
+                            "<td class='text-center d-flex justify-content-around'><a class='btn btn-danger btn-sm btn-del-es' title='delet' id='del' data-sid = "+
+                          x[i].id +"><i class='fa fa-trash'></i> </a></td></tr>";
+                        // console.log(output_uf)
+                        $("#msg-es").html('<div class="mt-2 text- alert alert-success alert-dismissible fade show" role="alert">Successfully Submitted<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                    };
+                    $("#tbody-es").html(output_uf);
+                    $("#post-form-es")[0].reset();
+                    // $(document).ready(function () {
+                            setTimeout(function () {
+                                // alert('Reloading Page');
+                                location.reload(true);
+                            }, 1000);
+                            // });
+                   
+                }else if(data.status==0) {
+                    $("#msg-es").html('<div class="mt-2 text- alert alert-warning alert-dismissible fade show" role="alert">Unable to Save Data<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                }
+                
+            },
+
+        })
+    }
+    })
+    
+    $('#tbody-es').on("click",".btn-del-es",function (){
+        // console.log('button selected')
+        let id = $(this).attr("data-sid");
+        let csr = $("input[name=csrfmiddlewaretoken").val();
+        console.log(id)
+        mydata = { sid: id, csrfmiddlewaretoken: csr };
+        mythis = this;
+        $.ajax({
+            url : "{% url 'es_delete' %}",
+            method: "POST",
+            data: mydata,
+            success : function(data) {
+                if (data.status==1){
+                    $("#msg-es").html('<div class="mt-2 text- alert alert-warning alert-dismissible fade show" role="alert">Successfully Deleted<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                    $(mythis).closest("tr").fadeOut();
+                }
+            }
+        })
+    })
+
+
+    
+
+
+</script>

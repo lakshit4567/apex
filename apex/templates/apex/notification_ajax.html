@@ -1,0 +1,76 @@
+
+<script>
+    $("#btn-noti").click("#notification-form",function(){
+    // $("#btnsave").click(function(){
+        // output = "";
+        let name = $("#p_name").val()
+        let size = $("#p_size").val();
+        let quantity = $("#q_order").val();
+        let thickness = $("#p_thickness").val();
+        let csr = $("input[name=csrfmiddlewaretoken").val();
+        // console.log(raw_date);
+        // console.log(raw_thickness);
+        // console.log(raw_size);
+        // console.log(raw_grade);
+        // console.log(raw_weight);
+        // console.log(s_weight);
+        
+        n_data = {
+            p_name : name,
+            p_size : size,
+            p_quantity : quantity,
+            p_thickness : thickness,
+            csrfmiddlewaretoken: csr,
+        };
+        if(size == ''){
+            $("#toast8_id").html(
+                        alert_msg("Success!", "Please Enter Subject", "toast-div-danger")
+            ); 
+        }else if(thickness == ''){
+            $("#toast8_id").html(
+                        alert_msg("Success!", "Please Enter Operation Request", "toast-div-danger")
+            ); 
+            // $("#msg-n").html('<div class="mt-2 text- alert alert-danger alert-dismissible fade show" role="alert"><strong>Error!</strong> Please Enter Thickness<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        }else if(quantity == '') {
+            $("#toast8_id").html(
+                    alert_msg("Success!", "Please Enter Reason", "toast-div-danger")
+            ); 
+            // $("#msg-n").html('<div class="mt-2 text- alert alert-danger alert-dismissible fade show" role="alert"><strong>Error!</strong> Please Enter Quantity.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        
+        }
+        else{
+        $.ajax({
+            url : "{% url 'n_send' %}",
+            method: "POST",
+            data: n_data,
+            dataType: "json",
+            success: function (data) {
+                x = data.n_data1;
+                if (data.status == "Save") {
+                    $("#toast8_id").html(
+                        alert_msg("Success!", "Sent Successfully", "toast-div-success")
+            ); 
+                    $("#notification-form")[0].reset();
+                };
+                  
+                if (data.status==0){
+                        
+                    $("#toast8_id").html(
+                        alert_msg("Error!", "Unable To Send Message", "toast-div-danger")
+            ); 
+                        $("#notification-form")[0].reset();
+                }
+                
+                
+            },
+
+        })
+    }
+    })
+    
+
+
+
+
+
+</script>

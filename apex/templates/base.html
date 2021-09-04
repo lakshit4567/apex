@@ -1,0 +1,685 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Apex Industries</title>
+
+   
+    <!-- Our Custom CSS -->
+    <link rel="stylesheet" href="{% static '/css/style55.css' %}">
+    <link rel="stylesheet" href="{% static '/css/flex5.css'%}">
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+</head>
+
+<body onload="startTime()">
+
+    <!-- all toasts -->
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 5">
+        <div id='toast_id'></div>
+        <div id="toast1_id"></div>
+        <div id="toast2_id"></div>
+        <div id="toast4_id"></div>
+        <div id="toast5_id"></div>
+        <div id="toast3_id" class="essentials_page"></div>
+        <div id="toast6_id"></div>
+        <div id="toast7_id"></div>
+        <div id="toast8_id"></div>
+    </div>
+    <!-- all toasts -->
+
+    <!-- fm add entry modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Enter Entry Details</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <table>
+                <form action="" method="post" id="fm_form" style="width: 80%;" class=" justify-content-center">
+                    {% csrf_token %}
+                        <div class="mb-2"><input class="form-control" type="date" name="Date" id="fm_date" required placeholder="Enter Date"></div>
+                        
+                            <!-- <input class="form-control" type="text" name="Register" id="fm_register" required> -->
+                            <!-- <input class="form-control" type="number" min="0" name="Coil ID" id="rm_id" required> -->
+                            <div class="mb-2"><select class="form-control" name="Coil_ID" id="rm_id" required placeholder="Select RM Coil ID">
+                                <option value="select" selected disabled>Select</option>
+                                <!-- {% for c in coil %}
+                                <option value="{{c.id}}">{{c.id}}</option>
+                                {% endfor %} -->
+                                </select></div>
+                        
+                        
+                        <div class="mb-2"><input class="form-control" type="text" name="Coil Size" id="rm_size" required placeholder="Enter RM Size (inxin)" disabled></div>
+                        
+                            <div class="mb-2"><select class="form-control" name="Coil_grade" id="rm_grade" required placeholder="Select RM Grade">
+                                <option value="select" selected disabled>Select</option>
+                                <!-- <option value="202Q">202Q</option>
+                                <option value="304Q">304Q</option>
+                                <option value="316Q">316Q</option> -->
+                                
+                            </select></div>
+                            
+                                                        
+                        <div class="mb-2"><input class="form-control" type="number" min="0" name="Coil Weight" id="rm_weight" required placeholder="Enter RM Weight (kg)"></div>
+                        <div class="mb-2"><select class="form-control" name="FM-Type" id="fm_type" required placeholder="Select FM Type">
+                            <option value="select" selected disabled>Select</option>
+                            <option value="Square">Square</option>
+                            <option value="Round">Round</option>
+                            
+                        </select></div>
+
+                        <div class="mb-2"><input class="form-control" type="number" min="0" name="FM Thickness" id="fm_thickness" required placeholder="Enter FM Thickness (mm)"></div>
+                        <div class="mb-2"><input class="form-control" type="text" name="FM Size" id="fm_size" required placeholder="Enter FM Size (inxin)"></div>
+                        <div class="mb-2"><input class="form-control" type="number" min="0" name="FM Weight" id="fm_weight" required placeholder="Enter FM Weight (kg)"></div>
+                        <div class="mb-2"><input class="form-control" type="number" min="0" name="FM Quantity" id="fm_quantity" required placeholder="Enter FM Quantity (pcs)"></div>
+                        <div class="mb-2"><input class="form-control" type="number" min="0" name="FM ScrapeWeight" id="fm_scrapeweight" required placeholder="Enter FM Scrape Weight (kg)"></div>
+                        <div class="mb-2"><input class="form-control" type="number" min="0" name="UF Thickness" id="ufm_thickness" required placeholder="Enter UFM Thickness (mm)"></div>
+                        <div class="mb-2"><input class="form-control" type="text" name="UF Size" id="ufm_size" required placeholder="Enter UFM Size (inxin)"></div>
+                        <div class="mb-2"><input class="form-control" type="number" min="0" name="UF Weight" id="ufm_weight" required placeholder="Enter UFM Weight (kg)"></div>
+                        <div class="mb-2"><input class="form-control" type="number" min="0" name="UF Quantity" id="ufm_quantity" required placeholder="Enter UFM Quantity (pcs)"></div>
+                        
+                        
+                                <!-- <span><i class="fas fa-plus"></i></span><span class="ml-2">add entry</span></button> -->
+                        
+                       
+                    </form>
+                </table>
+                <div id="msg"></div>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <input type="button"  class="p-2 float-right btn btn-sm btn-primary border rounded-left rounded-right text-uppercase"
+                id="btnsave_fm" value="Add Entry">
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- fm add entry modal -->
+
+    <!-- notification Modal -->
+    <div class="modal fade" id="notifModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title text-center" id="exampleModalLabel">Notifications</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body pl-0" id = "tadded_1">
+                {% for m in all_ms %}
+                    {% if m.subject == 'Request Access' %}
+                        <a class = "notif-link" href="{% url 'user_account' %}">
+                        <div class="pl-3 mb-1 lowstk" style="border-left: #1cad1c 7px solid;">
+                        
+                            <h6>{{m.subject}}</h6>
+                            <span>{{m.text}}</span>
+                            <!-- <span class="text-danger text-right tablecounts">10</span> -->
+                            <br>
+                            <span class="text-secondary">{{m.date}}</span>
+                        </div>
+                        </a>
+                    {% else %}
+                        {% if m.subject == 'Account Created' %}
+                            <a class = "notif-link" href="{% url 'user_account' %}">
+                            <div class="pl-3 mb-1 lowstk" style="border-left: #1cad1c 7px solid;">
+                            
+                                <h6>{{m.subject}}</h6>
+                                <span>{{m.text}}</span>
+                                <!-- <span class="text-danger text-right tablecounts">10</span> -->
+                                <br>
+                                <span class="text-secondary">{{m.date}}</span>
+                            </div>
+                            </a>
+                        {% else %}
+                            {% if m.subject == 'Raw Material Alert' %}
+                            <a class = "notif-link" href="{% url 'user_raw_material' %}">
+                            <div class="pl-3 mb-1 lowstk" id="tadded">
+                            
+                                <h6>{{m.subject}}</h6>
+                                <span>{{m.text}}</span>
+                                <span class="text-danger text-right tablecounts">{{m.stock_count}}</span>
+                                <br>
+                                <span class="text-secondary">{{m.date}}</span>
+                            </div>
+                            </a>
+                            {% elif m.subject == 'Essential Stock Alert' %}
+                                <a class = "notif-link" href="{% url 'user_essential_material' %}">
+                                <div class="pl-3 mb-1 lowstk" id="tadded">
+                                
+                                    <h6>{{m.subject}}</h6>
+                                    <span>{{m.text}}</span>
+                                    <span class="text-danger text-right tablecounts">{{m.stock_count}}</span>
+                                    <br>
+                                    <span class="text-secondary">{{m.date}}</span>
+                                </div>
+                                </a>
+                            {% elif m.subject == 'Finish Material Alert' %}
+                            <a class = "notif-link" href="{% url 'user_finished_material' %}">
+                                <div class="pl-3 mb-1 lowstk" id="tadded">
+                                
+                                    <h6>{{m.subject}}</h6>
+                                    <span>{{m.text}}</span>
+                                    <span class="text-danger text-right tablecounts">{{m.stock_count}}</span>
+                                    <br>
+                                    <span class="text-secondary">{{m.date}}</span>
+                                </div>
+                                </a>
+                            {% elif m.subject == 'Notification Alert' %}
+                               
+                                <div class="pl-3 mb-1 lowstk" id="tadded">
+                                
+                                    <h6>{{m.subject}}</h6>
+                                    <span>{{m.text}}</span>
+                                    <span class="text-danger text-right tablecounts">{{m.stock_count}}</span>
+                                    <br>
+                                    <span class="text-secondary">{{m.date}}</span>
+                                </div>
+                                <!-- </a> -->
+                            {% else %}
+                                
+                                <div class="pl-3 mb-1 lowstk" id="tadded">
+                                
+                                    <h6>{{m.subject}}</h6>
+                                    <span>{{m.text}}</span>
+                                    <span class="text-danger text-right tablecounts">{{m.stock_count}}</span>
+                                    <br>
+                                    <span class="text-secondary">{{m.date}}</span>
+                                </div>
+                                
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+           
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    <!-- notification Modal -->
+
+
+
+    <div class="wrapper">
+
+        <!-- Sidebar Holder -->
+        {% include 'components/sidebar.html' %}
+        <!-- Sidebar -->
+
+
+
+        <!-- Page Content Holder -->
+        <div id="content">
+
+            <!-- Header -->
+            {% include 'components/header.html' %}
+            <!-- Header -->
+
+            <!-- Main Content -->
+            {% block main %}
+            {% endblock %}
+            <!-- Main Content -->
+
+
+        </div>
+
+
+
+    </div>
+
+    <!-- Font awesome cdn -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+        crossorigin="anonymous" />
+
+
+    <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+
+
+    <!-- jQuery CDN - Slim version (=without AJAX) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" -->
+        <!-- integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"> -->
+        <!-- </script> -->
+    <!-- Popper.JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
+        integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous">
+        </script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
+        integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous">
+        </script>
+
+    <script src="{% static '/javascript/Piechart1.js'%}"></script>
+    <!-- <script src="{% static '/javascript/Barchart1.js'%}" ></script> -->
+    <script src="{% static '/javascript/LiveTime1.js'%}"></script>
+    <!-- <script src="{% static '/javascript/tableinputs1.js'%}"></script> -->
+
+
+
+
+    <!-- chart js cdn -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.0/chart.min.js"
+        integrity="sha512-VMsZqo0ar06BMtg0tPsdgRADvl0kDHpTbugCBBrL55KmucH6hP9zWdLIWY//OTfMnzz6xWQRxQqsUFefwHuHyg=="
+        crossorigin="anonymous"></script>
+    <!-- <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script> -->
+    <!-- <script src=></script> -->
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    
+    <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css"></script>
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> -->
+    <script src="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.min.css"></script>
+
+    <!-- ajax JS -->
+    <!-- {% static '/javascript/stockjs/emstock.js'%} -->
+    <!-- <script src="{% static 'ajax_jss/essentials_ajax.js' %}"></script>  -->
+    <script src="{% static 'ajax_jss/raw_material_ajax.js' %}"></script> 
+    <script src="{% static 'ajax_jss/sales_ajax.js' %}"></script> 
+    <script src="{% static 'ajax_jss/uf_material_ajax.js' %}"></script> 
+    <script src="{% static 'ajax_jss/uf_sale_ajax.js' %}"></script> 
+    <script src="{% static 'ajax_jss/upd_ajax.js' %}"></script>
+    <script src="{% static 'ajax_jss/datatables.js' %}"></script> 
+    <!-- ajax JS -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+                $(this).toggleClass('active');
+            });
+        });
+    </script>
+
+
+    {% block script %}
+    {% endblock %}
+    {% include 'apex/fm_ajax.html' %}
+    {% include 'apex/user_ajax.html' %}
+    {% include 'apex/employee_account_ajax.html' %}
+    {% include 'apex/timmer_ajax.html' %}
+    
+    {% include 'apex/notification_ajax.html' %}
+    
+    {% include 'apex/alert_ajax.html' %}
+    
+    <script>
+    
+        
+        var notification_div = document.getElementById('notification_div')
+        // 'ws://localhost:8000/ws/alert/'
+        let socket = new WebSocket(
+        'ws://'
+            + window.location.host
+            + '/ws/alert/'
+            // + room_code
+            // + '/'
+        );
+        function alert_Send(Subject,count,text,date,stock_count) {
+            let count_html = document.querySelector(".badge")
+            count_html.innerHTML = count
+            count_html.classList.add("bg-danger")
+            // if(count){
+            //     // count_html.classList.add("bg-danger")
+            //     // count_html.innerHTML = count
+            // }
+
+            if (Subject === null){
+                console.log('null vales')
+            } else {
+                if (Subject == 'Request Access'){
+                    let notification_div3 = document.getElementById("notification_div_1")
+
+
+                    var para3 = `
+                    <a class = "notif-link" href="{% url 'user_account' %}">
+                    <div class="pl-3 mb-1 lowstk" style="border-left: #1cad1c 7px solid;">   
+                            <h6 class="subject">${Subject}</h6>
+                            <span class="message">${text}</span>
+                            <br>
+                            <span class="text-secondary">${date}</span>
+                            </div>
+                            </a>`
+                    // var para = `<h6 class="subject">${Subject}</h6>
+                    //             <p class="message">${text}</p>`
+                        $("#notification_div_1").prepend(para3);
+                }
+                else if (Subject == 'Account Created'){
+
+                let notification_div = document.getElementById("notification_div_1")
+
+
+                var para = `
+                <a class = "notif-link" href="{% url 'user_account' %}">
+                <div class="pl-3 mb-1 lowstk" style="border-left: #1cad1c 7px solid;">   
+                        <h6 class="subject">${Subject}</h6>
+                        <span class="message">${text}</span>
+                        <br>
+                        <span class="text-secondary">${date}</span>
+                </div>
+                </a>`
+                // var para = `<h6 class="subject">${Subject}</h6>
+                //             <p class="message">${text}</p>`
+                $("#notification_div_1").prepend(para);
+
+            } else {
+                if (Subject == 'Raw Material Alert'){
+                let notification_div = document.getElementById("notification_div_1")
+
+                var para = `
+                <a class = "notif-link" href="{% url 'user_raw_material' %}">
+                <div class="pl-3 mb-1 lowstk" style="border-left:#db1515 7px solid;">   
+                        <h6 class="subject">${Subject}
+                        <span class="text-danger text-right tablecounts">${stock_count}</span></h6>
+                        <span class="message">${text}</span>
+                        <br>
+                        <span class="text-secondary">${date}</span>
+                </div>
+                </a>`
+            
+                // var para = `<h6 class="subject">${Subject}</h6>
+                //             <p class="message">${text}</p>`
+                // notification_div.innerHTML += para
+                $("#notification_div_1").prepend(para);
+            } else if (Subject == 'Essential Stock Alert'){
+                let notification_div = document.getElementById("notification_div_1")
+
+                var para = `
+                <a class = "notif-link" href="{% url 'user_essential_material' %}">
+                <div class="pl-3 mb-1 lowstk" style="border-left:#db1515 7px solid;">   
+                        <h6 class="subject">${Subject}
+                        <span class="text-danger text-right tablecounts">${stock_count}</span></h6>
+                        <span class="message">${text}</span>
+                        <br>
+                        <span class="text-secondary">${date}</span>
+                </div>
+                </a>`
+            
+                // var para = `<h6 class="subject">${Subject}</h6>
+                //             <p class="message">${text}</p>`
+                // notification_div.innerHTML += para
+                $("#notification_div_1").prepend(para);
+            } else if (Subject == 'Finish Material Alert'){
+                let notification_div = document.getElementById("notification_div_1")
+
+                var para = `
+                <a class = "notif-link" href="{% url 'user_finished_material' %}">
+                <div class="pl-3 mb-1 lowstk" style="border-left:#db1515 7px solid;">   
+                        <h6 class="subject">${Subject}
+                        <span class="text-danger text-right tablecounts">${stock_count}</span></h6>
+                        <span class="message">${text}</span>
+                        <br>
+                        <span class="text-secondary">${date}</span>
+                </div>
+                </a>`
+            
+                // var para = `<h6 class="subject">${Subject}</h6>
+                //             <p class="message">${text}</p>`
+                // notification_div.innerHTML += para
+                $("#notification_div_1").prepend(para);
+            } else if( Subject == 'Notification Alert'){
+                let notification_div = document.getElementById("notification_div_1")
+
+                var para = `
+                
+                <div class="pl-3 mb-1 lowstk" style="border-left:#db1515 7px solid;">   
+                        <h6 class="subject">${Subject}
+                        <span class="text-danger text-right tablecounts">${stock_count}</span></h6>
+                        <span class="message">${text}</span>
+                        <br>
+                        <span class="text-secondary">${date}</span>
+                </div>
+                `
+
+                // var para = `<h6 class="subject">${Subject}</h6>
+                //             <p class="message">${text}</p>`
+                // notification_div.innerHTML += para
+                $("#notification_div_1").prepend(para);
+            }else{
+                let notification_div = document.getElementById("notification_div_1")
+
+                var para = `
+                
+                <div class="pl-3 mb-1 lowstk" style="border-left:#db1515 7px solid;">   
+                        <h6 class="subject">${Subject}
+                        <span class="text-danger text-right tablecounts">${stock_count}</span></h6>
+                        <span class="message">${text}</span>
+                        <br>
+                        <span class="text-secondary">${date}</span>
+                </div>
+                `
+
+                // var para = `<h6 class="subject">${Subject}</h6>
+                //             <p class="message">${text}</p>`
+                // notification_div.innerHTML += para
+                $("#notification_div_1").prepend(para);
+            }
+            } 
+            if (Subject == 'Account Created'){
+                let tadded_div = document.getElementById("tadded_1")
+
+
+                var td = `
+                <a class = "notif-link" href="{% url 'user_account' %}">
+                <div class="pl-3 mb-1 lowstk" style="border-left: #1cad1c 7px solid;">   
+                        <h6>${Subject}</h6>
+                        <span>${text}</span>
+                        <br>
+                        <span class="text-secondary">${date}</span>
+                </div>
+                </a>`
+                // var para = `<h6 class="subject">${Subject}</h6>
+                //             <p class="message">${text}</p>`
+                $("#tadded_1").prepend(td);
+            } else if(Subject == 'Request Access'){
+                let tadded_div = document.getElementById("tadded_1")
+
+
+                var td = `
+                <a class = "notif-link" href="{% url 'user_account' %}">
+                <div class="pl-3 mb-1 lowstk" style="border-left: #1cad1c 7px solid;">   
+                        <h6>${Subject}</h6>
+                        <span>${text}</span>
+                        <br>
+                        <span class="text-secondary">${date}</span>
+                </div>
+                </a>`
+                // var para = `<h6 class="subject">${Subject}</h6>
+                //             <p class="message">${text}</p>`
+                $("#tadded_1").prepend(td);
+            }
+             else {
+                if ( Subject == 'Raw Material Alert'){
+                    let tadded_div = document.getElementById("tadded_1")
+                    var td = `
+                    <a class = "notif-link" href="{% url 'user_raw_material' %}">
+                    <div class="pl-3 mb-1 lowstk" id="tadded">   
+                            <h6>${Subject}</h6>
+                            <span>${text}</span>
+                            <br>
+                            <span class="text-secondary">${date}</span>
+                    </div>
+                    </a>`
+                    $("#tadded_1").prepend(td);
+            } else if (Subject == 'Essential Stock Alert'){
+                let tadded_div = document.getElementById("tadded_1")
+                    var td = `
+                    <a class = "notif-link" href="{% url 'user_essential_material' %}">
+                    <div class="pl-3 mb-1 lowstk" id="tadded">   
+                            <h6>${Subject}</h6>
+                            <span>${text}</span>
+                            <br>
+                            <span class="text-secondary">${date}</span>
+                    </div>
+                    </a>`
+                    $("#tadded_1").prepend(td);
+            } else if (Subject == 'Finish Material Alert'){
+                let tadded_div = document.getElementById("tadded_1")
+                    var td = `
+                    <a class = "notif-link" href="{% url 'user_finished_material' %}">
+                    <div class="pl-3 mb-1 lowstk" id="tadded">   
+                            <h6>${Subject}</h6>
+                            <span>${text}</span>
+                            <br>
+                            <span class="text-secondary">${date}</span>
+                    </div>
+                    </a>`
+                    $("#tadded_1").prepend(td);
+            } else if (Subject == 'Notification Alert'){
+                let tadded_div = document.getElementById("tadded_1")
+                    var td = `
+                    
+                    <div class="pl-3 mb-1 lowstk" id="tadded">   
+                            <h6>${Subject}</h6>
+                            <span>${text}</span>
+                            <br>
+                            <span class="text-secondary">${date}</span>
+                    </div>
+                    `
+                    $("#tadded_1").prepend(td);
+            } else{
+                let tadded_div = document.getElementById("tadded_1")
+                    var td = `
+                   
+                    <div class="pl-3 mb-1 lowstk" id="tadded">   
+                            <h6>${Subject}</h6>
+                            <span>${text}</span>
+                            <br>
+                            <span class="text-secondary">${date}</span>
+                    </div>
+                   `
+                    $("#tadded_1").prepend(td);
+            } 
+
+            }
+            }
+            
+
+            
+            // console.log(Subject,count,text)
+        }
+        socket.open = function(e){
+            console.log("connection establishde")
+        }
+        socket.onmessage = function(e){
+            var data = JSON.parse(e.data)
+            // console.log(data.payload)
+            if (data){
+                alert_Send(data.payload.Subject, data.payload.count,data.payload.text,data.payload.date,data.payload.stock_count)
+            }
+        }
+        socket.onclose = function(e){
+            console.log('closed')
+
+        }
+        </script>
+
+        <script>
+            
+
+            var room_code = '{{request.user}}'
+            // 'ws://localhost:8000/ws/user-alert/'+ room_code +'/'
+            let user_socket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/user-alert/'
+            + room_code
+            + '/'
+        );
+            // console.log(user_socket,"#######")
+            // function user_noti_alert(delete_access,userRole) {
+            //     window.alert("dfdfd")
+            //     $("#toast_id").html(
+            //             alert_msg("Success!", "User Updated", "toast-div-success")
+            //     ); 
+
+            // }
+            
+            user_socket.onopen = function(e){
+                console.log('user socket connected')
+            }
+
+            user_socket.onmessage = function(e){
+                try{
+                    var user_data = JSON.parse(e.data)
+                    console.log(user_data)
+                    if (user_data){
+                        const user_alert_noti = (head, msg,msg2, boot_class) => {
+                                return `        
+                                        <div class="toast-div ${boot_class}" id="id-toast">
+                                        <div class="toast-header border-bottom">
+                                            <strong class="mr-auto text-dark">${head}</strong>
+                                            <button class=" btn btn-lg pr-lg-2 m-0 py-0 float-right" onclick='this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode); return false;'>
+                                                                &times;</button>
+                                        </div>
+                                        <div class="toast-body border-top px-lg-5 text-center">
+                                        <strong>Delete Access: </strong>${msg}<br> <strong>Stutus: </strong>${msg2}
+                                        </div>
+                                    </div>
+                                    
+                                    `;
+                                };
+                        $("#toast_id").html(
+                            user_alert_noti("Success!",user_data.payload.delete_access ,user_data.payload.userRole, "toast-div-success")
+                        ); 
+                        $("#toast1_id").html(
+                            user_alert_noti("Success!",user_data.payload.delete_access ,user_data.payload.userRole, "toast-div-success")
+                        ); 
+                        $("#toast2_id").html(
+                            user_alert_noti("Success!",user_data.payload.delete_access ,user_data.payload.userRole, "toast-div-success")
+                        ); 
+                        $("#toast3_id").html(
+                            user_alert_noti("Success!",user_data.payload.delete_access ,user_data.payload.userRole, "toast-div-success")
+                        ); 
+                        $("#toast4_id").html(
+                            user_alert_noti("Success!",user_data.payload.delete_access ,user_data.payload.userRole, "toast-div-success")
+                        ); 
+                        $("#toast5_id").html(
+                            user_alert_noti("Success!",user_data.payload.delete_access ,user_data.payload.userRole, "toast-div-success")
+                        ); 
+                        $("#toast6_id").html(
+                            user_alert_noti("Success!",user_data.payload.delete_access ,user_data.payload.userRole, "toast-div-success")
+                        ); 
+                        $("#toast7_id").html(
+                            user_alert_noti("Success!",user_data.payload.delete_access ,user_data.payload.userRole, "toast-div-success")
+                        ); 
+                        $("#toast8_id").html(
+                            user_alert_noti("Success!",user_data.payload.delete_access ,user_data.payload.userRole, "toast-div-success")
+                        ); 
+                        // $("#toast_id").html(
+                        //     alert_msg("Success!", user_data.payload.delete_access, "toast-div-success")
+                        // ); 
+                    // user_noti_alert(data.payload.delete_access,data.payload.userRole)
+                }
+            }
+            catch{
+                console.log('sds')
+            }
+
+            }
+
+            user_socket.onclose = function(e){                
+                console.log('user socket closed')
+            }
+
+        </script>
+
+</body>
+
+</html>

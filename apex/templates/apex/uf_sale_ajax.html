@@ -1,0 +1,152 @@
+<script>
+    $.ajax({
+        method: 'GET',
+        url : "{% url 'usale_save' %}",
+        success: function(response){
+            // console.log(response.data)
+            const us_m_t = response.data
+            us_m_t.map(item =>{
+                $('#usfm_id').append(`<option value="${item.id}">
+                                       ${item.id}
+                                  </option>`);
+            })
+        }
+    })
+    var ua_s_t = document.getElementById('usfm_id');
+    const us_m_grad = document.getElementById('us_m_type');
+    ua_s_t.addEventListener('change', function() {
+        // console.log('jdsjd')
+        var selected_id = this.value;
+        us_m_grad.textContent = "Select"
+        // console.log(selected_id);
+        $.ajax({
+            method: 'GET',
+            url : `get_us_type/${selected_id}/`,
+            success : function(response){
+                var us_m_data = response.data
+                // console.log(response.data);
+                us_m_data.map(item =>{
+                    $('#us_m_type').val(item.UFM_type);
+                })
+            }
+
+        })
+    }, false);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    $("#btnsave-usale").click("#usale-form",function(){
+    // $("#btnsave").click(function(){
+        output_uf = "";
+        let ufmsale_id= $("#usfm_id").val();
+        let sale_date = $("#usale_date").val();
+        let usale_type = $("#us_m_type").val();
+        let sale_quantity = $("#usale_quantity").val();
+        let sale_weight = $("#usale_weight").val();
+        let csr = $("input[name=csrfmiddlewaretoken").val();
+        // console.log(uf_date)
+        // console.log(sale_weight)
+        // console.log(sale_quantity)
+        sale_data = {
+            us_m_type : usale_type,
+            ufmsales_id : ufmsale_id,
+            sales_date : sale_date,
+            sales_quantity: sale_quantity,
+            sales_weight: sale_weight,
+            csrfmiddlewaretoken: csr,
+        };
+        if(ufmsale_id == ''){
+            // console.log('input')
+            $("#msg-usales").html('<div class="mt-2 text- alert alert-danger alert-dismissible fade show" role="alert"><strong>Error!</strong> Please Enter UFM ID.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        }else if(sale_date == ''){
+            $("#msg-usales").html('<div class="mt-2 text- alert alert-danger alert-dismissible fade show" role="alert"><strong>Error!</strong> Please enter date.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        }else if(sale_quantity == '') {
+            $("#msg-usales").html('<div class="mt-2 text- alert alert-danger alert-dismissible fade show" role="alert"><strong>Error!</strong> Please enter quantity field.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        }else if(sale_weight == '') {
+            $("#msg-usales").html('<div class="mt-2 text- alert alert-danger alert-dismissible fade show" role="alert"><strong>Error!</strong> Please enter weight field.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        }    
+        else{
+        $.ajax({
+            url : "{% url 'usale_save' %}", //
+            method: "POST",
+            data: sale_data,
+            dataType: "json",
+            success: function (data) {
+                x = data.sale_data;
+                if (data.status == 1) {
+                    $("#msg-usales").html('<div class="mt-2 text- alert alert-warning alert-dismissible fade show" role="alert">Not enough weight in stock.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                };
+                if (data.status == 2) {
+                    $("#msg-usales").html('<div class="mt-2 text- alert alert-warning alert-dismissible fade show" role="alert">Not enough quantity in stock.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                }
+                if (data.status == "Save") {
+                    for (i = 0; i < x.length; i++) {
+                        output_uf +=
+                            "<tr><td>" +
+                            x[i].id +
+                            "</td><td>" +
+                            x[i].register_id +
+                            "</td><td>" +
+                            x[i].UFcoilID_id  +
+                            "</td><td>" +
+                            x[i].Sale_date +
+                            "</td><td>" +
+                            x[i].Sale_Type +
+                            "</td><td>" +
+                            x[i].Sale_Quantity +
+                            "</td><td>" +
+                            x[i].Sale_Weight +
+                            "</td>" +
+                            "<td class='text-center d-flex justify-content-around'><a class='btn btn-danger btn-sm btn-del-usale' title='delet' id='del' data-sid = "+
+                            x[i].id +"><i class='fa fa-trash'></i> </a></td></tr>";
+                        // console.log(output_uf)
+                        $("#msg-usales").html('<div class="mt-2 text- alert alert-success alert-dismissible fade show" role="alert">Successfully Submitted<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                    };
+                    $("#tbody-usale").html(output_uf);
+                    $("#usale-form")[0].reset();
+                   
+                }if(data.status==0) {
+                    $("#msg-usales").html('<div class="mt-2 text- alert alert-warning alert-dismissible fade show" role="alert">Unable to Save Data<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                }
+                
+            },
+
+        })
+    }
+    })
+    
+    $('#tbody-usale').on("click",".btn-del-usale",function (){
+        // console.log('button selected')
+        let id = $(this).attr("data-sid");
+        let csr = $("input[name=csrfmiddlewaretoken").val();
+        console.log(id)
+        mydata = { sid: id, csrfmiddlewaretoken: csr };
+        mythis = this;
+        $.ajax({
+            url : "{% url 'usale_delete' %}",
+            method: "POST",
+            data: mydata,
+            success : function(data) {
+                if (data.status==1){
+                    $("#msg-usales").html('<div class="mt-2 text- alert alert-warning alert-dismissible fade show" role="alert">Successfully Deleted<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                    $(mythis).closest("tr").fadeOut();
+                }
+            }
+        })
+    })
+
+
+</script>
+</script>

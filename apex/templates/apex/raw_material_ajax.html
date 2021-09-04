@@ -1,0 +1,144 @@
+<!-- https://tutorial101.blogspot.com/2020/04/django-crud-create-read-update-delete.html -->
+<div id = 'toast_id'>
+</div>
+<script>
+
+
+
+    // const alert_msg = (msg, boot_class) => {
+
+    //    return `<div class="mt-2 text- alert alert-${boot_class} alert-dismissible fade show" role="alert">
+    //         <strong>Error!</strong> ${msg}
+    //         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    //             <span aria-hidden="true">&times;</span>
+    //         </button>
+    //     </div>`
+    // }
+
+    // const khud_ka_toast =() => {
+
+    // }
+    
+
+    const alert_msg = (msg, boot_class) => {
+        return `<div class = 'shadow toast-div'>
+                    <span id='close' onclick='this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode); return false;'>x</span>
+                    <p>hellloo</p>
+                    <p>second</p>
+                </div>
+        `
+    }
+
+    var liveToastBtn = document.getElementById('liveToastBtn')
+    $("#btnsave").click("#post-form",function(){
+    // $("#btnsave").click(function(){
+        output = "";
+        let raw_date = $("#raw_date").val();
+        let raw_thickness = $("#raw_thickness").val();
+        let raw_size = $("#raw_size").val();
+        let raw_grade = $("#raw_grade").val();
+        let raw_weight = $("#raw_weight").val();
+        let s_weight = $("#S_Weight").val();
+        let csr = $("input[name=csrfmiddlewaretoken").val();
+        // console.log(raw_date);
+        // console.log(raw_thickness);
+        // console.log(raw_size);
+        // console.log(raw_grade);
+        // console.log(raw_weight);
+        // console.log(s_weight);
+        
+        raw_data = {
+            r_date : raw_date,
+            r_thickness: raw_thickness,
+            r_size: raw_size,
+            r_grade: raw_grade,
+            r_weight: raw_weight,
+            sc_weight: s_weight,
+            csrfmiddlewaretoken: csr,
+        };
+        if(raw_date == ''){
+            $("#toast_id").html(alert_msg('Please thickness field', 'danger'))
+            // $("#msg-raw").html('<div class="mt-2 text- alert alert-danger alert-dismissible fade show" role="alert"><strong>Error!</strong> Please Date field.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        }else if(raw_thickness == ''){
+            $("#toast_id").html(alert_msg('Please thickness field', 'danger'))
+        }else if(raw_size == '') {
+            $("#msg-raw").html(alert_msg('Please thickness field', 'danger'))
+        }else if(raw_grade == '') {
+            $("#msg-raw").html(alert_msg('Please thickness field', 'danger'))
+        }else if(raw_weight == ''){
+            $("#msg-raw").html(alert_msg('Please thickness field', 'danger'))
+        }else if(s_weight == '') {
+            $("#msg-raw").html(alert_msg('Please thickness field', 'danger'))
+        }
+        else{
+        $.ajax({
+            url : "{% url 'raw_save' %}",
+            method: "POST",
+            data: raw_data,
+            dataType: "json",
+            success: function (data) {
+                x = data.raw_data1;
+                if (data.status == "Save") {
+                    for (i = 0; i < x.length; i++) {
+                        output +=
+                            "<tr><td>" +
+                            x[i].id +
+                            "</td><td>" +
+                            x[i].register_id +
+                            "</td><td>" +
+                            x[i].RM_Date +
+                            "</td><td>" +
+                            x[i].RM_Thickness +
+                            "</td><td>" +
+                            x[i].RM_Size +
+                            "</td><td>" +
+                            x[i].RM_Grade +
+                            "</td><td>" +
+                            x[i].RM_coilWeight +
+                            "</td><td>" +
+                            x[i].RM_scrapWeight +
+                            "<td class='text-center d-flex justify-content-around'><a class='btn btn-danger btn-sm btn-del' title='delet' id='del' data-sid = "+
+                            x[i].id +"><i class='fa fa-trash'></i> </a></td></tr>";
+                        console.log(output)
+                        $("#msg-raw").html('<div class="mt-2 text- alert alert-success alert-dismissible fade show" role="alert">Successfully Submitted<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                    };
+                    $("#tbody").html(output);
+                    $("#post-form")[0].reset();
+                    if (data.status==0){
+                        $("#msg-raw").html('<div class="mt-2 text- alert alert-warning alert-dismissible fade show" role="alert">Successfully Deleted<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                        
+                    }
+                }
+                
+            },
+
+        })
+    }
+    })
+    $('#tbody').on("click",'.btn-del',function (){
+        // console.log('button selected')
+        let id = $(this).attr("data-sid");
+        let csr = $("input[name=csrfmiddlewaretoken").val();
+        console.log(id)
+        mydata = { sid: id, csrfmiddlewaretoken: csr };
+        mythis = this;
+        $.ajax({
+            url : "{% url 'raw_delete' %}",
+            method: "POST",
+            data: mydata,
+            success : function(data) {
+                if (data.status==1){
+                    $("#msg-raw").html('<div class="mt-2 text- alert alert-warning alert-dismissible fade show" role="alert">Successfully Deleted<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                    $(mythis).closest("tr").fadeOut();
+                }
+            }
+        })
+    })
+
+
+
+
+
+
+
+</script>

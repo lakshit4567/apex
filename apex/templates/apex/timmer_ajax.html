@@ -1,0 +1,45 @@
+<script>
+    $("#btnsave-timer").click("#post-form-timmer",function(){
+    // $("#btnsave").click(function(){
+        
+        let a_time = $("#a_time").val();
+        let d_time = $("#d_time").val();
+        let csr = $("input[name=csrfmiddlewaretoken").val();
+        console.log(a_time);
+        console.log(d_time);
+        // console.log(sale_quantity)
+        timmer_data = {
+            ac_time : a_time,
+            dc_time : d_time,
+            csrfmiddlewaretoken: csr,
+        };
+        if(a_time == ''){
+            console.log('input')
+            $("#msg-emp").html('<div class="mt-2 text- alert alert-danger alert-dismissible fade show" role="alert"><strong>Error!</strong> Please Enter Active Time.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        }else if(d_time == ''){
+            $("#msg-emp").html('<div class="mt-2 text- alert alert-danger alert-dismissible fade show" role="alert"><strong>Error!</strong> Please enter In-Active Time.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        }
+        else{
+            console.log('save')
+        $.ajax({
+            url : "{% url 'save_timmer' %}", //
+            method: "POST",
+            data: timmer_data,
+            dataType: "json",
+            success: function (data) {
+                x = data.timmer_data;
+                if (data.status == "Save") {
+                    // $("#a_time").value(a_time);
+                    // $("#d_time").value(d_time);
+                    $("#msg-emp").html('<div class="mt-2 text- alert alert-warning alert-dismissible fade show" role="alert">Timmer Set.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                    // $("#post-form-timmer")[0].reset();
+                }else if(data.status==0) {
+                    $("#msg-emp").html('<div class="mt-2 text- alert alert-warning alert-dismissible fade show" role="alert">Unable to set Time.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                }
+                
+            },
+
+        })
+    }
+    })
+</script>

@@ -1,0 +1,147 @@
+<script>
+    
+    $.ajax({
+        method: 'GET',
+        url : "{% url 'upd_save' %}",
+        success: function(response){
+            // console.log(response.data)
+            const es_data = response.data
+            es_data.map(item =>{
+                $('#upd_id').append(`<option value="${item.id}">
+                    ${item.id}
+                    </option>`);
+                })
+            }
+        })
+    var a = document.getElementById('upd_id');
+    const type = document.getElementById('upd_type');
+    a.addEventListener('change', function() {
+        
+        var selected_id = this.value;
+        type.textContent = "Select"
+        
+        console.log(selected_id);
+        $.ajax({
+            method: 'GET',
+            url : `get_es_type/${selected_id}/`,
+            success : function(response){
+                var es_data = response.data
+                // console.log(response.data);
+                es_data.map(item =>{
+                    $('#upd_type').append(`<option value="${item.Type}">
+                                       ${item.Type}
+                                  </option>`);
+                    $('#upd_size').val(item.ES_Size);
+                })
+            }
+
+        })
+    }, false);
+
+
+
+    $("#btnsave-upd").click("#post-form-upd",function(){
+    // $("#btnsave").click(function(){
+        output_uf = "";
+        let id = $("#upd_id").val();
+        let date = $("#upd_date").val();
+        let type = $("#upd_type").val();
+        let quantity = $("#upd_quantity").val();
+        let size = $("#upd_size").val();
+        let csr = $("input[name=csrfmiddlewaretoken").val();
+        // console.log(uf_date)
+        // console.log(sale_weight)
+        // console.log(sale_quantity)
+        upd_data = {
+            upd_date : date,
+            upd_type : type,
+            upd_quantity:quantity,
+            upd_size : size,
+            upd_id : id,
+            csrfmiddlewaretoken: csr,
+        };
+        if(date == ''){
+            // console.log('input')
+            $("#msg-upd").html('<div class="mt-2 text- alert alert-danger alert-dismissible fade show" role="alert"><strong>Error!</strong> Please Enter Date.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        }else if(id == ''){
+            $("#msg-upd").html('<div class="mt-2 text- alert alert-danger alert-dismissible fade show" role="alert"><strong>Error!</strong> Please enter ID.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        }
+        else if(type == ''){
+            $("#msg-upd").html('<div class="mt-2 text- alert alert-danger alert-dismissible fade show" role="alert"><strong>Error!</strong> Please enter Type.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        }
+        
+        else if(quantity == '') {
+            $("#msg-upd").html('<div class="mt-2 text- alert alert-danger alert-dismissible fade show" role="alert"><strong>Error!</strong> Please enter quantity.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        }else if(size == ''){
+            $("#msg-upd").html('<div class="mt-2 text- alert alert-danger alert-dismissible fade show" role="alert"><strong>Error!</strong> Please enter Size.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        }
+        else{
+        $.ajax({
+            url : "{% url 'upd_save' %}", //
+            method: "POST",
+            data: upd_data,
+            dataType: "json",
+            success: function (data) {
+                x = data.upd_data;
+                if (data.status == 1){
+                    $("#msg-upd").html('<div class="mt-2 text- alert alert-warning alert-dismissible fade show" role="alert">Not Enough quantity in stock<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                };
+                if (data.status == "Save") {
+                    for (i = 0; i < x.length; i++) {
+                        output_uf +=
+                            "<tr><td>" +
+                            x[i].id +
+                            "</td><td>" +
+                            x[i].register_id +
+                            "</td><td>" +
+                            x[i].EPD_Date +
+                            "</td><td>" +
+                            x[i].EPD_UID_id  +
+                            "</td><td>" +
+                            x[i].EPD_Type +
+                            "</td><td>" +
+                            x[i].EPD_Quantity +
+                            "</td><td>" +
+                            x[i].EPD_Size +
+                            "</td>" +
+                            "<td class='text-center d-flex justify-content-around'><a class='btn btn-danger btn-sm btn-del-upd' title='delet' id='del' data-sid = "+
+                            x[i].id +"><i class='fa fa-trash'></i> </a></td></tr>";
+                        // console.log(output_uf)
+                        $("#msg-upd").html('<div class="mt-2 text- alert alert-success alert-dismissible fade show" role="alert">Successfully Submitted<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                    };
+                    $("#tbody-upd").html(output_uf);
+                    $("#post-form-upd")[0].reset();
+                   
+                }else if(data.status==0) {
+                    $("#msg-upd").html('<div class="mt-2 text- alert alert-warning alert-dismissible fade show" role="alert">Unable to Save Data<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                }
+                
+            },
+
+        })
+    }
+    })
+    
+    $('#tbody-upd').on("click",".btn-del-upd",function (){
+        // console.log('button selected')
+        let id = $(this).attr("data-sid");
+        let csr = $("input[name=csrfmiddlewaretoken").val();
+        console.log(id)
+        mydata = { sid: id, csrfmiddlewaretoken: csr };
+        mythis = this;
+        $.ajax({
+            url : "{% url 'upd_delete' %}",
+            method: "POST",
+            data: mydata,
+            success : function(data) {
+                if (data.status==1){
+                    $("#msg-upd").html('<div class="mt-2 text- alert alert-warning alert-dismissible fade show" role="alert">Successfully Deleted<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                    $(mythis).closest("tr").fadeOut();
+                }
+            }
+        })
+    })
+
+
+</script>
+</script>
