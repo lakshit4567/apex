@@ -167,7 +167,7 @@
                                         
                                                 <div class="d-flex m-2">
                                                         {{emfilter.form}}
-                                                        <input class="p-2 float-right btn btn-sm one-btn border rounded-left rounded-right text-uppercase"
+                                                        <input class="p-2 float-right btn btn-sm one-btn border rounded-left rounded-right text-uppercase serach"
                                                                 type="submit" value="Search">
                                                 </div>
                                         
@@ -445,7 +445,7 @@
                                                     {% for d in data2 %}
                                                     <tr>
                                                         <td>{{d.id}}</td>
-                                                        <td>{{d.register_id}}</td>
+                                                        <td>{{d.register.first_name}}</td>
                                                         <td>{{d.EPD_Date}}</td>
                                                         <td>{{d.EPD_UID_id}}</td>
                                                         <td>{{d.EPD_Type}}</td>

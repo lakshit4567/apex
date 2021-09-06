@@ -64,7 +64,7 @@
                         </div>
                         <div class="row mt-3">
                             <div class="col-md-12">
-                                <label for="email">Email</label>
+                                <label for="email">User Name</label>
                                 <input type="text" class="form-control" placeholder="Email" value="{{data.UserName}}" id="email" required>
                             </div>
         
@@ -168,7 +168,7 @@
                                 <th>User ID</th>
                                 <th>First Name</th>
                                 <th>Last Name</th>
-                                <th>Username</th>
+                                <th>User Name</th>
                                 <th>User Status</th>
                                 <th>User Role</th>
                                 <th>Delete Access</th>
@@ -190,59 +190,78 @@
                                 <td>{{d.Last_Name}}</td>
                                 <td>{{d.UserName}}</td>
                                 <td>
-                                    {% if d.status == 'Approved' %}
-                                    <select class="form-control" id = "status_{{d.id}}">
-                                        <option value="Approved">Approved</option>
-                                        <option value="Pending">Pending</option>
+                                    {% if d.UserName == 'Harish' %}
+                                    <select class="form-control" id="status_{{d.id}}" value ="Approved" disabled>
+                                        <option value="Approved" selected disabled>Approved</option>
                                     </select>
-                                    {% else %}
+                                    {%else%}
+                                        {% if d.status == 'Approved' %}
                                         <select class="form-control" id = "status_{{d.id}}">
-                                            <option value="Pending">Pending</option>
                                             <option value="Approved">Approved</option>
+                                            <option value="Pending">Pending</option>
                                         </select>
+                                        {% else %}
+                                            <select class="form-control" id = "status_{{d.id}}">
+                                                <option value="Pending">Pending</option>
+                                                <option value="Approved">Approved</option>
+                                            </select>
+                                        {% endif %}
                                     {% endif %}
                                 </td>                           
                                 <td>
-                                    {% if d.userRole == 'Active' %}
-                                        <select class="form-control" id = "role_{{d.id}}">
-                                            <option value="Active">Active</option>
-                                            <option value="In-Active">In-Active</option>
-                                        </select>
-                                    {% else %}
-                                        <select class="form-control" id = "role_{{d.id}}">
-                                            <option value="In-Active">In-Active</option>
-                                            <option value="Active">Active</option>
-                                        </select>
+                                    {% if d.UserName == 'Harish' %}
+                                    <select class="form-control" id="status_{{d.id}}" value="Active" disabled>
+                                        <option value="Active">Active</option>
+                                    </select>
+                                    {%else%}
+
+                                        {% if d.userRole == 'Active' %}
+                                            <select class="form-control" id = "role_{{d.id}}">
+                                                <option value="Active">Active</option>
+                                                <option value="In-Active">In-Active</option>
+                                            </select>
+                                        {% else %}
+                                            <select class="form-control" id = "role_{{d.id}}">
+                                                <option value="In-Active">In-Active</option>
+                                                <option value="Active">Active</option>
+                                            </select>
+                                        {% endif %}
                                     {% endif %}
-                                     <!-- {{d.userRole}} -->
                                 </td>
                                 <td>
-                                    {% if d.delete_access == 'Yes' %}
-                                        {% if  d.userRole == 'In-Active' %}
+                                    {% if d.UserName == 'Harish' %}
+                                    <select class="form-control" id="status_{{d.id}}" value="Yes" disabled>
+                                        <option value="Yes">Yes</option>
+                                    </select>
+                                    {%else%}
+
+                                        {% if d.delete_access == 'Yes' %}
+                                            {% if  d.userRole == 'In-Active' %}
+                                            <select class="form-control" id = "del_{{d.id}}">
+                                                <option value="No">No</option>
+                                                <option value="Yes">Yes</option>
+                                            </select>
+                                            {% else %}
+                                        <select class="form-control" id = "del_{{d.id}}">
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                            {% endif %}
+                                        {% else %}
                                         <select class="form-control" id = "del_{{d.id}}">
                                             <option value="No">No</option>
                                             <option value="Yes">Yes</option>
                                         </select>
-                                        {% else %}
-                                    <select class="form-control" id = "del_{{d.id}}">
-                                        <option value="Yes">Yes</option>
-                                        <option value="No">No</option>
-                                    </select>
                                         {% endif %}
-                                    {% else %}
-                                    <select class="form-control" id = "del_{{d.id}}">
-                                        <option value="No">No</option>
-                                        <option value="Yes">Yes</option>
-                                    </select>
                                     {% endif %}
                                 </td>
                                 
                                 <td class="text-center">
-                                    {% if d.UserName == 'admin@gmail.com' %}
+                                    {% if d.UserName == 'Harish' %}
                                     
                                     {% else %}
                                     <input class="btn btn-sm one-btn profile-button btn-user-update"  type="button"
-                                         value="Update" data-sid="{{d.id}}">
+                                        value="Update" data-sid="{{d.id}}">
                                     <!-- <button class="btn btn-sm one-btn profile-button btn-edit-employee" data-sid="{{d.id}}"  type="button" data-toggle="modal" data-target="#updateModal">Update</button> -->
                                     <a class="btn btn-sm three-btn btn-user-delete" data-sid="{{d.id}}"  title="delete">
                                         <i class="fa fa-trash"></i>

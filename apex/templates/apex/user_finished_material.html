@@ -47,9 +47,6 @@
                                 <div class="btn-group m-2">
                                     <div class="d-flex justify-content-between">
                                         <div class="d-flex justify-content-start log flex-sm-row flex-column">
-
-                                            <!-- {{ logtablefilter.form| crispy}} -->
-                                            
                                             
                                             <div class="form-group searchInput">
                                                 <!-- <label>Search</label> -->
@@ -74,7 +71,7 @@
                                     <th scope="col">ID</th>
                                     <th scope="col">Username</th>
                                     <th scope="col">Operation</th>
-                                    <th scope="col">Table ID</th>
+                                    <th scope="col">FM ID</th>
                                     <th scope="col">Date</th>
                                 </tr>
                             </thead>
@@ -119,7 +116,7 @@
                         </div>
                         <div class="my-3 text-left">
                             <input class="p-2 px-4 btn one-btn border rounded-left rounded-right text-uppercase"
-                                    type="button" value="Send" id="btn-noti">
+                                type="button" value="Send" id="btn-noti">
                             <div id="msg-n"></div>
                         </div>
                     </div>
@@ -140,10 +137,12 @@
     <div class="row justify-content-center">
 
         <div class="col-md-12" id="finished_col">
-
+<!-- <div class="card col-lg-8">
+    <div class="card-body">
+        <div class="table-responsive"> -->
             <div class="card card-body table-responsive">
                 <!-- filters -->               
-                <div class="d-flex justify-content-start align-items-center flex-sm-row mb-2 ">
+                <div class="d-flex justify-content-start align-items-center flex-sm-row mb-2">
                     <form action="" method="get">
                         <div class="btn-group m-2">
                             <div class="d-flex justify-content-between">
@@ -170,7 +169,10 @@
                     
                         <div class="d-flex m-2">
                             {{fmstockfilter.form}}
-                            <input class="p-2 float-right btn btn-sm one-btn border rounded-left rounded-right text-uppercase" type="submit"
+                            <input
+                                class="p-2 float-right btn btn-sm one-btn border rounded-left rounded-right
+                                text-uppercase prevented serach"
+                                type="submit"
                                 value="Search">
                         </div>
                     
@@ -223,7 +225,7 @@
                         <tr>
                             <td scope="col">{{d.id}}</td>
                             <td scope="col">{{d.FM_Date}}</td>
-                            <td scope="col">{{d.register_id}}</td>
+                            <td scope="col">{{d.register.first_name}}</td>
                             <td scope="col">{{d.coilUID_id}}</td>
                             <td scope="col">{{d.Size}}</td>
                             <td scope="col">{{d.Grade}}</td>
@@ -327,9 +329,9 @@
                     <thead>
                         <tr>
                             <th style="width: 100px;">Sale ID</th>
-                            <th style="width: 160px;">Register ID</th>
-                            <th>Sold To</th>
-                            <th>FM ID</th>
+                            <th style="width: 100px;">Register ID</th>
+                            <th style="width: 160px;">Sold To</th>
+                            <th style="width: 100px;">FM ID</th>
                             <th>Date</th>
                             <th>Type</th>
                             <th>Quantity (pcs)</th>
@@ -366,11 +368,10 @@
                                             type="button" value="Add Entry" id="btnsave-sale" disabled>
                                     </td>
                                 {% else %}
-                                    <td><input class="form-control" type="text"  id="sale_sold" required></td>
+                                    <td><input class="form-control col-12" type="text"  id="sale_sold" required></td>
                                     <td>
                                         <!-- <input class="form-control" type="number" min="0" name="Sale ID" id="sfm_id" required> -->
-                                        <select class="form-control" name="Sale ID" id="sfm_id" required
-                                            style="width:90px;">
+                                        <select class="form-control" name="Sale ID" id="sfm_id" required style="width:90px;">
                                             <option value="select" selected disabled>Select</option>
                                             <!-- {% for d in data %}
                                             <option value="{{d.id}}">{{d.id}}</option>

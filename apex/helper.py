@@ -111,8 +111,8 @@ class alertmessages:
                 ms.save()
 
     def rmalert(rmm,stock_count):
-        if rmm <= 2:
-            print('refile stock')
+        if rmm <= 1500:
+            # print('refile stock')
             ms = Messages.objects.create()
             ms.subject = 'Raw Material Alert'
             ms.text = 'Coil stock is Low get New Stock'

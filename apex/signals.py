@@ -80,8 +80,12 @@ def register(sender,instance,created, **kwargs):
 def rawmaterial(sender,created,instance,**kwargs):
     if created:
         rm = rawMaterial.objects.filter(id__exact=instance.id)
-        rm_count = rawMaterial.objects.filter().count()
-        alertmessages.rmalert(rmm=rm_count, stock_count=rm_count)
+        rm_count = rawMaterial.objects.all()
+        rm_final_count = rm_count.count()
+        total = 0
+        for i in rm_count:
+            total += int(i.RM_coilWeight)
+        alertmessages.rmalert(rmm=total, stock_count=rm_count)
         rm_data = rm.values()
         print(rm_data)
         
@@ -121,7 +125,7 @@ def fmstock_raw(sender,instance,created,**kwargs):
             res2[key] = val
         for key, value in res2.items():
             # print(key,value)
-            if 1000 >= value:
+            if 1500 >= value:
                 alertmessages.empty(subject='Finish Material Alert',text='FM stock of size {} is Low get New Stock'.format(key),
                 stock_count=value)
                 # ms = Messages.objects.create()
@@ -228,7 +232,7 @@ def sale(sender,instance,created,**kwargs):
 
                 for i in fm_check:
                     size.append(i['FM_Size'])
-                    weight.append(i['FM_Weight'])
+                    weight.append(i['FM_Quantity'])
                 res = {key: [] for key in size}
                 for key, val in zip(size, weight):
                     res[key].append(int(val))
@@ -330,8 +334,11 @@ def es_stock(sender,instance,created,**kwargs):
 
 @receiver(post_delete,sender=rawMaterial)
 def raw_post(sender,instance,**kwargs):
-    rm =rawMaterial.objects.filter().count()
-    alertmessages.rmalert(rmm=rm,stock_count=rm)
+    # rm =rawMaterial.objects.filter().count()
+    total = 0
+    for i in rm_count:
+            total += int(i.RM_coilWeight)
+    alertmessages.rmalert(rmm=rm,stock_count=total)
 
 # @receiver(post_delete,sender=FMstock)
 # def fm_post(sender,instance,**kwargs):
@@ -424,7 +431,7 @@ def FM_delete_alert(sender,instance,**kwargs):
         weight = []
         for i in fm:
             size.append(i['FM_Size'])
-            weight.append(i['FM_Weight'])
+            weight.append(i['FM_Quantity'])
         res = {key: [] for key in size}
         for key, val in zip(size, weight):
             res[key].append(int(val))

@@ -33,7 +33,6 @@ class Register(models.Model):
 
 
 class rawMaterial(models.Model):
-    
     register = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True)
     Vendor = models.CharField(max_length=40,blank=True,null=True)
     RM_Date = models.DateField(blank=True,null=True)

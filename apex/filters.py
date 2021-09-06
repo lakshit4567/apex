@@ -12,32 +12,26 @@ from .models import *
 class RMFilter(django_filters.FilterSet):
     # size = CharFilter(field_name='RM_Size',label='',lookup_expr='icontains',widget=forms.TextInput(attrs={'type': 'text','style':'max-width: auto; min-width: 100px;','placeholder': 'Size'}))
     # grade = CharFilter(field_name='RM_Grade',label='',lookup_expr='icontains',widget=forms.TextInput(attrs={'type': 'text','style':'max-width: auto; min-width: 100px;','placeholder': 'Grade'}))
-    start_date = DateFilter(field_name='RM_Date', label='', lookup_expr='gte',
-                            widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'Start Date', 'class': 'mr-2'}))
-
-    end_date = DateFilter(field_name='RM_Date', label='', lookup_expr='lte',
-                          widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'End Date', 'class': 'mr-2'}))
+    start_date = DateFilter(field_name='RM_Date', label='', lookup_expr='gte', widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'Start Date', 'class': 'mr-2 id_start_date'}))
+    end_date = DateFilter(field_name='RM_Date', label='', lookup_expr='lte' , widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'End Date', 'class': 'mr-2 id_end_date'}))
 
     class Meta:
         model = rawMaterial
         fields = '__all__'
         exclude = ['register', 'RM_coilWeight', 'RM_scrapWeight',
-                   'RM_Thickness', 'RM_Size', 'RM_Grade', 'RM_Date', 'receiver',"Vendor"]
+                'RM_Thickness', 'RM_Size', 'RM_Grade', 'RM_Date', 'receiver',"Vendor"]
 
 
 class LogTableFilter(django_filters.FilterSet):
-    username = CharFilter(field_name='Username', label='', lookup_expr='icontains', widget=forms.TextInput(
-        attrs={'type': 'text', 'style': 'max-width: 280px;', 'placeholder': 'Username'}))
-    crud = CharFilter(field_name='CRUDoperation', label='', lookup_expr='icontains', widget=forms.TextInput(
-        attrs={'type': 'text', 'style': 'max-width: 280px;', 'placeholder': 'Operation'}))
-    date = DateFilter(field_name='Log_Date', label='',
-                      widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'Date'}))
+    username = CharFilter(field_name='Username', label='', lookup_expr='icontains', widget=forms.TextInput(attrs={'type': 'text', 'style': 'max-width: 280px;', 'placeholder': 'Username'}))
+    crud = CharFilter(field_name='CRUDoperation', label='', lookup_expr='icontains', widget=forms.TextInput(attrs={'type': 'text', 'style': 'max-width: 280px;', 'placeholder': 'Operation'}))
+    date = DateFilter(field_name='Log_Date', label='', widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'Date'}))
 
     class Meta:
         model = LogTable
         fields = '__all__'
         exclude = ['Username', 'CRUDoperation', 'Log_Date',
-                   'Table_name', 'register_id', 'Table_id', ]
+                'Table_name', 'register_id', 'Table_id', ]
 
 # this is our finished material date filter
 class FMfilter(django_filters.FilterSet):
@@ -48,17 +42,16 @@ class FMfilter(django_filters.FilterSet):
     # date = DateFilter(field_name='FM_Date', label='', widget=forms.DateInput(
     #     attrs={'type': 'date', 'placeholder': 'Date'}))
 
-    start_date = DateFilter(field_name='FM_Date', label='', lookup_expr='gte',
-                            widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'Start Date', 'class': 'mr-2'}))
+    start_date = DateFilter(field_name='FM_Date', label='', lookup_expr='gte', widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'Start Date', 'class': 'mr-2'}))
 
-    end_date = DateFilter(field_name='FM_Date', label='', lookup_expr='lte',
-                          widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'End Date', 'class': 'mr-2'}))
+    end_date = DateFilter(field_name='FM_Date', label='', lookup_expr='lte', widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'End Date', 'class': 'mr-2'}))
+
 
     class Meta:
         model = FMstock
         fields = '__all__'
         exclude = ['FM_Date', 'register', 'coilUID', 'Size', 'Grade', 'coilWeight', 'materialType', 'FM_Thickness', 'FM_Size',
-                   'FM_Weight', 'FM_Quantity', 'FM_scrapWeight', 'UF_Thickness', 'UF_Size', 'UF_Weight', 'UF_Quantity']
+                'FM_Weight', 'FM_Quantity', 'FM_scrapWeight', 'UF_Thickness', 'UF_Size', 'UF_Weight', 'UF_Quantity']
 
 # this is essential material data filter
 class EMfilter(django_filters.FilterSet):
@@ -69,11 +62,9 @@ class EMfilter(django_filters.FilterSet):
     # date = DateFilter(field_name='ES_Date', label='', widget=forms.DateInput(
     #     attrs={'type': 'date', 'placeholder': 'Date'}))
 
-    start_date = DateFilter(field_name='ES_Date', label='', lookup_expr='gte',
-                            widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'Start Date', 'class': 'mr-2'}))
+    start_date = DateFilter(field_name='ES_Date', label='', lookup_expr='gte',widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'Start Date', 'class': 'mr-2'}))
 
-    end_date = DateFilter(field_name='ES_Date', label='', lookup_expr='lte',
-                          widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'End Date', 'class': 'mr-2'}))
+    end_date = DateFilter(field_name='ES_Date', label='', lookup_expr='lte',widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'End Date', 'class': 'mr-2'}))
 
     class Meta:
         model = essentialitemStock
@@ -87,11 +78,9 @@ class UFMFilter(django_filters.FilterSet):
     # weight = CharFilter(field_name='UFM_Weight', label='', lookup_expr='icontains', widget=forms.TextInput(
     #     attrs={'type': 'text', 'style': 'max-width: auto; min-width: 100px;', 'placeholder': 'Weight'}))
 
-    start_date = DateFilter(field_name='UFM_date', label='', lookup_expr='gte',
-                            widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'Start Date', 'class': 'mr-2'}))
+    start_date = DateFilter(field_name='UFM_date', label='', lookup_expr='gte',widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'Start Date', 'class': 'mr-2'}))
 
-    end_date = DateFilter(field_name='UFM_date', label='', lookup_expr='lte',
-                          widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'End Date', 'class': 'mr-2'}))
+    end_date = DateFilter(field_name='UFM_date', label='', lookup_expr='lte',widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'End Date', 'class': 'mr-2'}))
 
     class Meta:
         model = UFMstock
@@ -108,11 +97,9 @@ class scrapeFilter(django_filters.FilterSet):
     # weight = CharFilter(field_name='s_weight', label='', lookup_expr='icontains', widget=forms.TextInput(
     #     attrs={'type': 'text', 'style': 'max-width: auto; min-width: 100px;', 'placeholder': 'Weight'}))
 
-    start_date = DateFilter(field_name='S_Date', label='', lookup_expr='gte',
-                            widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'Start Date', 'class': 'mr-2'}))
+    start_date = DateFilter(field_name='S_Date', label='', lookup_expr='gte', widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'Start Date', 'class': 'mr-2'}))
 
-    end_date = DateFilter(field_name='S_Date', label='', lookup_expr='lte',
-                          widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'End Date', 'class': 'mr-2'}))
+    end_date = DateFilter(field_name='S_Date', label='', lookup_expr='lte', widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'End Date', 'class': 'mr-2'}))
 
     class Meta:
         model = Scrape
@@ -204,4 +191,4 @@ class deletedFilter(django_filters.FilterSet):
         model = Deleted_tables
         fields = '__all__'
         exclude = ['material_id', 'type', 'date',
-                   'table_name', 'quantity', 'size', 'weight']
+                'table_name', 'quantity', 'size', 'weight']

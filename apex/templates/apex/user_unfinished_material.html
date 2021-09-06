@@ -169,8 +169,7 @@
                     
                         <div class="d-flex m-2">
                             {{UFfilter.form}}
-                            <input class="p-2 float-right btn btn-sm one-btn border rounded-left rounded-right text-uppercase" type="submit"
-                                value="Search">
+                            <input class="p-2 float-right btn btn-sm one-btn border rounded-left rounded-right text-uppercase serach" type="submit" value="Search">
                         </div>
                     
                     </form>
@@ -197,14 +196,14 @@
                             {% for d in data %}
                             <tr>
                                 <td scope="col">{{d.id}}</td>
-                                <td scope="col">{{d.register_id}}</td>
+                                <td scope="col">{{d.register.first_name}}</td>
                                 <td scope="col">{{d.UFM_date}}</td>
                                 <td scope="col">{{d.FMid}}</td>
                                 <td scope="col">{{d.UFM_type}}</td>
                                 <td scope="col">{{d.UFM_Quantity}}</td>
                                 <td scope="col">{{d.UFM_Weight}}</td>
                                 <td class="text-center d-flex justify-content-around">
-                                   {% if d_access == 'No' or role == 'In-Active' %}
+                                {% if d_access == 'No' or role == 'In-Active' %}
                                     <a class="btn three-btn btn-sm btn-del-ufm disabled" title='delet' data-sid="{{d.id}}"
                                         id="del">
                                         <i class="fa fa-trash"></i>

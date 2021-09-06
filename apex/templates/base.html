@@ -296,6 +296,7 @@
     <script src="{% static 'ajax_jss/uf_sale_ajax.js' %}"></script> 
     <script src="{% static 'ajax_jss/upd_ajax.js' %}"></script>
     <script src="{% static 'ajax_jss/datatables.js' %}"></script> 
+    <script src="{% static 'js/check_null.js' %}"></script> 
     <!-- ajax JS -->
 
     <script type="text/javascript">
@@ -320,8 +321,8 @@
     {% include 'apex/alert_ajax.html' %}
     
     <script>
-    
-        
+
+
         var notification_div = document.getElementById('notification_div')
         // 'ws://localhost:8000/ws/alert/'
         let socket = new WebSocket(

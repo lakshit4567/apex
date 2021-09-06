@@ -48,3 +48,18 @@ function myFunction2() {
     }
   }
   
+
+  // $(".serach").on("click", function (e) {
+  //   if ($(this).hasClass("prevented")) {
+  //     e.preventDefault();
+  //     start_date = new Date($("#id_start_date").val());
+  //     end_date = new Date($("#id_end_date").val());
+  //     console.log(start_date, end_date);
+
+  //     if (start_date && end_date == "Invalid Date") {
+  //       alert("PLEASE SELECT START & END DATES");
+  //     }
+
+  //     $(this).removeClass("prevented");
+  //   }
+  // });

@@ -84,10 +84,17 @@ def Admin_Dashboard(request):
 
     #rendering scrap material table
     scrap_t = Scrape.objects.all()
+    for i in scrap_t:
+        print(i.t_id)
+        
+        
+    # user_name = scrap_t.t_id
+    # print(user_name)
+
 
     return render(request, 'apex/overview.html', {'header': header, 'ms': ms, 'ms_count': ms_count, 'all_ms': all_ms,
-                                                  'scrap_t': scrap_t, 'rw_month': rw_month, 'rw_s_month': rw_s_month, 'fm_w': fm_w,
-                                                  'fm_s': fm_s, 'f_q': f_q, 'f_s': f_s, 'es_s': es_s, 'es_u': es_u})
+                                                'scrap_t': scrap_t, 'rw_month': rw_month, 'rw_s_month': rw_s_month, 'fm_w': fm_w,
+                                                'fm_s': fm_s, 'f_q': f_q, 'f_s': f_s, 'es_s': es_s, 'es_u': es_u})
 
 
 
@@ -149,14 +156,12 @@ def User_Raw_Material(request):
         endDate = None
 
     #filtering raw table in graph
-    if (startDate and endDate) != None:
+    if startDate and endDate != None:
         # rendering raw data from date filters to graph
-        rw_data = rawMaterial.objects.filter(
-            RM_Date__gte=startDate, RM_Date__lte=endDate).values()
+        rw_data = rawMaterial.objects.filter(RM_Date__gte=startDate, RM_Date__lte=endDate).values()
         
         # extracting grade and coilweight from filtered data
-        d_weight = dic_key_val.dict(
-            dic=rw_data, key='RM_Grade', value='RM_coilWeight')
+        d_weight = dic_key_val.dict(dic=rw_data, key='RM_Grade', value='RM_coilWeight')
 
         # dumping extracted data
         dict = json.dumps(d_weight)
@@ -168,11 +173,10 @@ def User_Raw_Material(request):
         # rending all raw data to graph
         rw_data = rawMaterial.objects.values()
 
-         # extracting grade and coilweight from filtered data
-        d_weight = dic_key_val.dict(
-            dic=rw_data, key='RM_Grade', value='RM_coilWeight')
+        # extracting grade and coilweight from filtered data
+        d_weight = dic_key_val.dict(dic=rw_data, key='RM_Grade', value='RM_coilWeight')
 
-         # dumping extracted data    
+        # dumping extracted data    
         dict = json.dumps(d_weight)
 
         # laoding data
@@ -185,9 +189,9 @@ def User_Raw_Material(request):
     # rendering last 5 messages for dropdown notification in reverse order
     ms = Messages.objects.filter().order_by('-id')[:5]
 
-     # rendering count of all messages
+    # rendering count of all messages
     ms_count = str(Messages.objects.filter(seen__exact='False').count())
- 
+
     header = 'Raw Material Stock'
 
     # rendering raw material data in table
@@ -206,7 +210,7 @@ def User_Raw_Material(request):
 
     #Context
     d = {'data': data, 'log': log, 'myFilter': rawFilter,  'header': header, 'ms': ms, 'ms_count': ms_count, 'all_ms': all_ms, 'raw': raw, 'd_access': str(rg.delete_access),
-         'role': str(rg.userRole),'username':'saif','room_code':'admin'}
+        'role': str(rg.userRole),'username':'saif','room_code':'admin'}
     return render(request, 'apex/user_raw_material.html', d)
 
 
@@ -221,7 +225,7 @@ def User_UnFinished_Material(request):
         startDate = None
         endDate = None
 
-    if (startDate and endDate) != None:
+    if startDate and endDate != None:
         # rendering ufm data from date filters to graph
         ufm_data = UFMstock.objects.filter(
             UFM_date__gte=startDate, UFM_date__lte=endDate).values()
@@ -319,7 +323,7 @@ def User_Finished_Material(request):
     except:
         startDate = None
         endDate = None
-    if (startDate and endDate) != None:
+    if startDate and endDate != None:
         # rendering fm data and sale data from date filters to graph
         fm_data = FMstock.objects.filter(
             FM_Date__gte=startDate, FM_Date__lte=endDate).values()
@@ -412,7 +416,7 @@ def User_Essential_Material(request):
         startDate = None
         endDate = None
 
-    if (startDate and endDate) != None:
+    if startDate and endDate != None:
         # rendering data from date filters to graph
         es = essentialitemStock.objects.filter(
             ES_Date__gte=startDate, ES_Date__lte=endDate).values()
@@ -565,7 +569,7 @@ def raw_save(request):
 
     if request.method == "POST":
         date = request.POST['r_date']
-        print(date)
+        # print(date)
         thickness = request.POST['r_thickness']
         size = request.POST['r_size']
         grade = request.POST['r_grade']
@@ -600,7 +604,7 @@ def raw_delete(request):
     else:
         return JsonResponse({'status': 0})
 
-# this function saves unfinished material data
+# this function saves unfinished material data not getting used for now
 @unautherized_user
 def uf_save(request):
     if request.method == 'POST':
@@ -959,7 +963,7 @@ def user_save(request):
             lname = request.POST['last_name']
             email = request.POST['email']
             password = request.POST['password']
-            print(id, fname, lname, email, password)
+            # print(id, fname, lname, email, password)
             user = User.objects.get(id=request.user.id)
             rg = Register.objects.get(user=user)
             user.set_password(password)

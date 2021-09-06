@@ -38,7 +38,7 @@ class AlertSystem(WebsocketConsumer):
         print('disconnected')
 
     def send_notification(self, event):
-        print(event)
+        # print(event)
 
         data = json.loads(event.get('value'))
         print(data,'@@@@@@@@@@@@@')

@@ -1,6 +1,5 @@
 import dj_database_url
 import os
-
 from pathlib import Path
 from django.contrib.messages import constants as messages
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -26,12 +25,14 @@ INSTALLED_APPS = [
     'crispy_forms',
     'django_filters',
 ]
+
 MESSAGE_TAGS = {
     messages.ERROR: 'danger',
     messages.SUCCESS: 'success',
     messages.INFO: 'info',
     messages.WARNING: 'warning'
 }
+
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -43,6 +44,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 ROOT_URLCONF = 'apexindustries.urls'
 TEMPLATES = [
     {
@@ -59,6 +61,7 @@ TEMPLATES = [
         },
     },
 ]
+
 WSGI_APPLICATION = 'apexindustries.wsgi.application'
 ASGI_APPLICATION = 'apexindustries.asgi.application'
 # Database
@@ -70,7 +73,8 @@ DATABASES = {
     }
 }
 
-# DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+
+DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 CHANNEL_LAYERS = {
     "default": {
@@ -81,6 +85,7 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [
@@ -120,11 +125,8 @@ STATICFILES_DIRS = [
 #     STATIC_ROOT = os.path.join(BASE_DIR, 'apex/static')
 
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR,"static")]
+STATICFILES_DIRS = [os.path.join(BASE_DIR,"apex/static")]
 STATIC_ROOT = os.path.join(BASE_DIR,"staticfiles")
-
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 
 
