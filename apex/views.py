@@ -1013,22 +1013,19 @@ def register(request):
         password2 = request.POST.get('password2')
         if password1 == password2:
             if User.objects.filter(username=email).exists():
-                messages.error(request, 'That username is taken')
-                print("Email exists")
+                messages.error(request, 'That Username is taken')
+                print("Username exists")
                 return redirect('register')
             else:
-                user = User.objects.create_user(
-                    username=email, password=password2, first_name=fname, last_name=lname)
-                Register.objects.create(
-                    user=user, First_Name=fname, Last_Name=lname, UserName=email, delete_access='False')
+                user = User.objects.create_user(username=email, password=password2, first_name=fname, last_name=lname)
                 user.save()
-
+                print(type(user), '###############*********')
+                Register.objects.create(user=user, First_Name=fname, Last_Name=lname, UserName=email, delete_access='False')
+                
                 # ms.stock_count = ''
-                alertmessages.empty(subject='Account Created',
-                                    text=email, stock_count='')
+                alertmessages.empty(subject='Account Created', text=email, stock_count='')
                 # print('You are now registered and can log in')
-                messages.success(
-                    request, 'You are now registered and can log in')
+                messages.success(request, 'You are now registered and can log in')
                 return redirect('login')
         else:
             messages.error(request, 'Error!, Passwords do not match')
