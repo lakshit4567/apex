@@ -1,4 +1,4 @@
-# import dj_database_url
+import dj_database_url
 import os
 from pathlib import Path
 from django.contrib.messages import constants as messages
@@ -74,7 +74,7 @@ DATABASES = {
 }
 
 
-DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+# DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 CHANNEL_LAYERS = {
     "default": {
