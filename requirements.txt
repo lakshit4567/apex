@@ -37,7 +37,6 @@ django-bootstrap-calendar==0.1.1
 django-bootstrap-datepicker-plus==3.0.5
 django-bootstrap4==3.0.1
 django-celery-beat==2.2.0
-django-channels==0.7.0
 django-chartjs==2.2.1
 django-crispy-forms==1.11.2
 django-crontab==0.7.1
@@ -45,6 +44,7 @@ django-currentuser==0.5.3
 django-dbbackup==3.3.0
 django-easy-pdf==0.1.1
 django-filter==2.4.0
+django-heroku==0.3.1
 django-storages==1.11.1
 django-tables2==2.3.4
 django-timezone-field==4.1.2
@@ -80,6 +80,7 @@ Pillow==8.2.0
 plotly==4.14.3
 prompt-toolkit==3.0.18
 protobuf==3.17.3
+psycopg2==2.9.1
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pycodestyle==2.7.0
