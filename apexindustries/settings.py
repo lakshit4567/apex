@@ -46,6 +46,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'apexindustries.urls'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -127,6 +128,8 @@ STATICFILES_DIRS = [
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR,"apex/static")]
 STATIC_ROOT = os.path.join(BASE_DIR,"staticfiles")
+
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 
 
