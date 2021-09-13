@@ -34,7 +34,7 @@ def register(sender,instance,created, **kwargs):
         a_hour = int(a_time[0:2])
         a_min = a_time.replace(":",'')[2::]
         
-        d_hour = int(float(d_time[0:2]))
+        d_hour = int(d_time[0:2])
         # d_hour = int(d_time[0:2])
         print(d_hour, "-------------")
         print(type(d_hour), "-------------")
