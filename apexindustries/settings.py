@@ -74,6 +74,7 @@ DATABASES = {
     }
 }
 
+# for connecting the database on heroku postgres
 db_from_env = dj_database_url.config()
 DATABASES['default'].update(db_from_env)
 
