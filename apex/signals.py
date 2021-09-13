@@ -33,7 +33,10 @@ def register(sender,instance,created, **kwargs):
         d_time = str(time.inactive_time)
         a_hour = int(a_time[0:2])
         a_min = a_time.replace(":",'')[2::]
-        d_hour = int(d_time[0:2])
+        d_hour = int(float(d_time[0:2]))
+        # d_hour = int(d_time[0:2])
+        print(d_hour, "-------------")
+        print(type(d_hour), "-------------")
         d_min = d_time.replace(":","")[2::]
         a_t = int(str(a_hour)+str(a_min))
         d_t = int(str(d_hour)+str(d_min))
@@ -41,7 +44,7 @@ def register(sender,instance,created, **kwargs):
         my_time = str(datetime.datetime.now())[10:16].replace(":",'')
         
         hour = int(my_time[0:2])
-       
+    
         min = my_time[2::]
         
         t = int(str(hour)+str(min))
